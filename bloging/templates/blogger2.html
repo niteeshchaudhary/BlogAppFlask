@@ -1,0 +1,297 @@
+<!-- blogger_page.html -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Blogger Page</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+
+      nav {
+        background-color: #333;
+        height: 50px;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        height: 100%;
+        padding: 0 20px;
+      }
+
+      .navbar a {
+        color: #fff;
+        text-decoration: none;
+        margin-right: 10px;
+      }
+
+      h1 {
+        margin-top: 30px;
+        text-align: center;
+      }
+
+      .blogs {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 30px;
+      }
+
+      .blog {
+        background-color: #f1f1f1;
+        padding: 20px;
+        margin-bottom: 10px;
+      }
+
+      .navbar {
+        background-color: #333;
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+      }
+
+      .content {
+        margin-top: 20px;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .blog {
+        margin-bottom: 10px;
+        padding: 10px;
+        background-color: #f5f5f5;
+
+        border-radius: 5px;
+        box-shadow: 0px 2px 13px 0px #111;
+      }
+
+      .blog a {
+        color: #333;
+        text-decoration: none;
+        margin-right: 10px;
+      }
+
+      .blog a:hover {
+        text-decoration: underline;
+      }
+
+      textarea {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        resize: vertical;
+      }
+
+      input[type="submit"] {
+        padding: 10px 20px;
+        background-color: #333;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #555;
+      }
+
+      .blog-container {
+        background-color: #f5f5f5;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 20px 5px;
+      }
+
+      .blog-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+      }
+
+      .blog-content {
+        font-size: 16px;
+        color: #555;
+        margin-bottom: 20px;
+      }
+
+      .blog-author {
+        font-size: 14px;
+        color: #888;
+      }
+
+      .blog-date {
+        font-size: 14px;
+        color: #888;
+        margin-top: 10px;
+      }
+
+      .blog-likes {
+        font-size: 12px;
+        color: #888;
+        margin-top: 20px;
+      }
+
+      .blog-actions {
+        margin-top: 20px;
+        display: flex;
+      }
+      .blog-actions form {
+        margin-right: 10px;
+      }
+
+      .blog-actions form input[type="submit"] {
+        padding: 10px 20px;
+        background-color: #a5a5a5;
+        color: #000;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+
+      .blog-actions input[type="submit"]:hover {
+        background-color: #555555;
+        color: #fff;
+      }
+      .like-button {
+        padding: 0;
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+
+      .like-button i {
+        font-size: 24px;
+        color: #4caf50;
+      }
+      .unlike-button {
+        padding: 0;
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+
+      .unlike-button i {
+        font-size: 24px;
+        color: #f44336;
+      }
+
+      .delete-button {
+        padding: 0;
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+
+      .delete-button i {
+        font-size: 24px;
+        color: #ff0000;
+      }
+      .edit-button {
+        padding: 0;
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+
+      .edit-button i {
+        font-size: 24px;
+        color: #2196f3;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="navbar">
+        <a href="{{ url_for('blogger_page', name=user.name) }}"
+          >{{ user.name }}</a
+        >
+        <a href="{{ url_for('logout') }}">Logout</a>
+      </div>
+    </nav>
+
+    <h1>Welcome, {{ user.name }}</h1>
+
+    <div class="add-blog-form">
+      <h2>Add Blog</h2>
+      <form action="{{ url_for('add_blog') }}" method="POST">
+        <textarea
+          name="blog_content"
+          rows="5"
+          cols="40"
+          placeholder="Enter your blog content"
+        ></textarea>
+        <br />
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+    <div class="blog-container">
+      {% for blog in blogs %}
+      <div class="blog">
+        <h2 class="blog-title">{{ blog.content[:10] }}</h2>
+        <p class="blog-content">{{ blog.content }}</p>
+        <p class="blog-author">Author: {{ blog.author.name }}</p>
+        <p class="blog-date">
+          Published on {{ blog.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}
+        </p>
+        <p class="blog-likes">Likes: {{ blog.likes|length }}</p>
+
+        <div class="blog-actions">
+          {% if user.name == blog.author.name %}
+          <form
+            action="{{ url_for('edit_blog', blog_id=blog.id) }}"
+            method="GET"
+            class="edit-form"
+          >
+            <button type="submit" class="edit-button">
+              <i class="fas fa-pencil-alt"></i>
+            </button>
+          </form>
+          <form
+            action="{{ url_for('delete_blog', blog_id=blog.id) }}"
+            method="POST"
+            class="delete-form"
+          >
+            <button type="submit" class="delete-button">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </form>
+          {% endif %} {% if user in blog.likes %}
+          <form
+            action="{{ url_for('rate_blog', blog_id=blog.id) }}"
+            method="POST"
+            class="like-form"
+          >
+            <input type="hidden" name="rating" value="0" />
+            <button type="submit" class="unlike-button">
+              <i class="fas fa-thumbs-down"></i>
+            </button>
+          </form>
+          {% else %}
+          <form
+            action="{{ url_for('rate_blog', blog_id=blog.id) }}"
+            method="POST"
+            class="like-form"
+          >
+            <input type="hidden" name="rating" value="1" />
+            <button type="submit" class="like-button">
+              <i class="fas fa-thumbs-up"></i>
+            </button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </body>
+</html>
