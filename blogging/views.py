@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, url_for,session,flash
-from bloging import app
-from bloging.models import *
-from bloging import db
+from blogging import app
+from blogging.models import *
+from blogging import db
 
 with app.app_context():
     db.create_all() 

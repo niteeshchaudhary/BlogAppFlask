@@ -11,4 +11,4 @@ SQLALCHEMY_DATABASE_URI = "mysql://{username}:{password}@{hostname}/{databasenam
     )
 app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI #"mysql://root:@localhost:3306/flask"
 db = SQLAlchemy(app)
-from bloging import views
+from blogging import views
