@@ -20,7 +20,7 @@
 name: Build and deploy Python app to Azure Web App
 
 env:
-  AZURE_WEBAPP_NAME: your-app-name  # set this to the name of your Azure Web App
+  AZURE_WEBAPP_NAME: FaskBlog # set this to the name of your Azure Web App
   PYTHON_VERSION: '3.8'              # set this to the Python version to use
 
 on:
@@ -41,7 +41,7 @@ jobs:
       - name: Set up Python version
         uses: actions/setup-python@v3.0.0
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
+          python-version: '3.8'
           cache: 'pip'
 
       - name: Create and start virtual environment
@@ -82,5 +82,5 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          app-name: ${{ 'FlaskBlog' }}
+          publish-profile: ${{ '9f242972-2b84-4b29-ae1f-58a448d610ba' }}
